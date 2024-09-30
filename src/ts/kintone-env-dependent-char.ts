@@ -12,7 +12,7 @@ import { KintoneRestAPIClient, KintoneRecordField } from "@kintone/rest-api-clie
     /* 関数の定義 */
     const replaceNonJISCharacters = (input: string) => {
 
-        const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E]/g;
+    const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E\u2000-\u2FFF]/g;
 
         // 置き換え文字を定義
         let replacementCharacter = '[縺]';
@@ -23,10 +23,11 @@ import { KintoneRestAPIClient, KintoneRecordField } from "@kintone/rest-api-clie
     // 環境依存文字をチェックする関数
     const containsNonJISCharacters =  (input: string)=>{
         /* 定数の定義*/
-        const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E]/g;
+        const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E\u2000-\u2FFF]/g;
         
         // \u0020-\u007E: 基本的なASCII文字（空白や記号を含む）
         // \u00A1-\u00DF: 半角カタカナとラテン文字の一部
+        // \u2000-\u2FFF: 制御文字
         // \u3041-\u3093: ひらがな
         // \u30A1-\u30F6: カタカナ
         // \u30FB\: 
@@ -185,7 +186,7 @@ import { KintoneRestAPIClient, KintoneRecordField } from "@kintone/rest-api-clie
 
             try {
 
-                document.getElementById("#replace_button")?.classList.add("click");
+                document.getElementById('replace_button')?.classList.add("click");
 
                 button.disabled = true;
                 
@@ -201,7 +202,7 @@ import { KintoneRestAPIClient, KintoneRecordField } from "@kintone/rest-api-clie
                 };
                 
                 const getAllRecordsResp = await client.record.getAllRecords<ShippingData>(getAllRecordsParams);
-                const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E]/g;
+                const nonJISRegex = /[^\u0020-\u007E\u00A1-\u00DF\uFF61-\uFF9F\u3041-\u3093\u30A1-\u30F6\u30FB-\u30FC\u4E00-\u9FA0\u3000-\u303F\uFF01-\uFF5E\uFF10-\uFF5E\u2000-\u2FFF]/g;
                 
                 const targetRecords = await getAllRecordsResp.filter((record) => {
                     return nonJISRegex.test(record.住所1.value) ||
@@ -265,7 +266,7 @@ import { KintoneRestAPIClient, KintoneRecordField } from "@kintone/rest-api-clie
                 
                 await client.record.updateAllRecords(updateAllRecordsParams);
                 
-                // ボタン要素を取得
+                // // ボタン要素を取得
                 const replaceButton = document.getElementById("replace_button");
 
                 // クラスを削除
