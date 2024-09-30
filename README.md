@@ -3,6 +3,26 @@
 ## 機能一覧
 1. 注文情報アプリの文字化け変換機能
 
+## 開発環境の概要
+使用技術
+- JS
+    1. TypeScript
+    1. Webpack
+    1. babel
+- CSS
+    1. css
+
+を使用しています。ライブラリはCDNからnpmを使用するように変更しております。
+JavaScriptではなく、TypeScriptを使用すると２つのメリットがあります。
+- 型をつけることによって、テスト環境と本番環境のフィールドコードの差異を検知するのが容易になる。
+- kintoneのJSカスタマイズで頻発する、undefinedやnullによるエラーを未然に防ぐことができる。
+
+参考記事
+1. [TypeScriptでkintoneカスタマイズ開発をしてみよう
+](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/kintone-customize-using-typescript/)
+1. [kintoneアプリの型定義ファイルを活用して、kintoneカスタマイズをTypeScriptで開発してみよう
+](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/javascript-customize-middle-class-typescript/)
+
 ## 利用方法
 ### 事前準備(Node.jsのインストール)
 https://nodejs.org/ でインストーラーをダウンロードして node.js をインストールします。
