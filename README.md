@@ -3,26 +3,6 @@
 ## 機能一覧
 1. 注文情報アプリの文字化け変換機能
 
-## 開発環境の概要
-使用技術
-- JS
-    1. TypeScript
-    1. Webpack
-    1. babel
-- CSS
-    1. css
-
-を使用しています。ライブラリはCDNからnpmを使用するように変更しております。
-JavaScriptではなく、TypeScriptを使用すると２つのメリットがあります。
-- 型をつけることによって、テスト環境と本番環境のフィールドコードの差異を検知するのが容易になる。
-- kintoneのJSカスタマイズで頻発する、undefinedやnullによるエラーを未然に防ぐことができる。
-
-参考記事
-1. [TypeScriptでkintoneカスタマイズ開発をしてみよう
-](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/kintone-customize-using-typescript/)
-1. [kintoneアプリの型定義ファイルを活用して、kintoneカスタマイズをTypeScriptで開発してみよう
-](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/javascript-customize-middle-class-typescript/)
-
 ## 利用方法
 ### 事前準備(Node.jsのインストール)
 https://nodejs.org/ でインストーラーをダウンロードして node.js をインストールします。
@@ -30,6 +10,17 @@ https://nodejs.org/ でインストーラーをダウンロードして node.js 
 
 インストールすると npm コマンドなどが使えるようになります。
 コマンドラインで ``npm install`` と入力し実行します。package.json で定義されている依存ライブラリがインストールされます。
+
+### TypeScriptからJavaScriptへのトランスパイル
+基本的にはsrc/ts配下のTSファイルで開発を進めます。
+JSファイルに変換させる場合は、以下のコマンドを実行します。
+```
+npx webpack-cli
+```
+コマンド実行後、src/ts配下のTSファイルがトランスパイルされ、dist配下にJSファイルとして保存されます。
+
+### JSファイルをkintoneアプリに反映させる
+``npx webpack-cli``を実施し、TypeScriptからJavaScriptへトランスパイルを行った後、dist配下にJSファイルが生成されます。kintoneに反映したいときは、このトランスパイルされJSファイルをアプリ設定の画面でアップロードします。
 
 ### kintoneアプリのフィールド情報から型情報を生成
 @kintone/dts-genはkintoneのJavaScriptカスタマイズ用の関数定義に加えて、指定したアプリからフィールド情報を取り出すコマンドラインツールが同梱されています。
@@ -53,16 +44,3 @@ npx kintone-dts-gen --base-url https://***.cybozu.com \
 上の例を実行するとfields.d.tsというkintoneのフィールド情報をもとにした型定義ファイルが生成されます。
 kintoneのフィールド情報を更新したときはもう一度フィールド情報を作り直すようにしてください。
 **生成されたfield.d.tsをsrcディレクトリ下に配置**しておきましょう。
-
-### TypeScriptからJavaScriptへのトランスコンパイル
-基本的にはsrc/ts配下のTSファイルで開発を進めます。
-JSファイルに変換させる場合は、以下のコマンドを実行します。
-```
-npx webpack-cli
-```
-コマンド実行後、src/ts配下のTSファイルがトランスコンパイルされ、dist配下にJSファイルとして保存されます。
-
-
-## JSファイルをアプリに反映させる
- JSファイルをkintoneに反映したいときは、このトランスパイルされたdist配下に生成されたJSファイルをアップロードします。
- 拡張子js.mapのファイルは、デバッグに使うファイルなので、**kintoneのアプリ本体にはアップロードしません。**
